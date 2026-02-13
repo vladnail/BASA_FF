@@ -1,0 +1,30 @@
+{
+  "callouts": {
+    "custom": [
+      "важно",
+      "dff"
+    ],
+    "settings": {
+      "важно": [
+        {
+          "changes": {
+            "color": "82, 139, 212"
+          }
+        }
+      ],
+      "dff": [
+        {
+          "changes": {
+            "icon": "lucide-pencil",
+            "color": "68, 207, 110"
+          }
+        }
+      ]
+    }
+  },
+  "calloutDetection": {
+    "obsidian": true,
+    "theme": true,
+    "snippet": true
+  }
+}

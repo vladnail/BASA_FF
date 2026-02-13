@@ -1,0 +1,15 @@
+{
+  "accentColor": "",
+  "translucency": true,
+  "textFontFamily": "Times New Roman",
+  "baseFontSize": 19,
+  "monospaceFontFamily": "",
+  "enabledCssSnippets": [
+    "проверка",
+    "Basa"
+  ],
+  "cssTheme": "",
+  "baseFontSizeAction": true,
+  "showRibbon": true,
+  "theme": "moonstone"
+}

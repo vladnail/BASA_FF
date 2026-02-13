@@ -1,0 +1,23 @@
+{
+  "showUnsupportedFiles": false,
+  "promptDelete": false,
+  "vimMode": true,
+  "pdfExportSettings": {
+    "includeName": true,
+    "pageSize": "A4",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  },
+  "showLineNumber": false,
+  "readableLineLength": true,
+  "livePreview": true,
+  "strictLineBreaks": true,
+  "propertiesInDocument": "hidden",
+  "foldIndent": true,
+  "rightToLeft": false,
+  "showIndentGuide": true,
+  "spellcheckDictionary": [
+    "осцилляционная"
+  ]
+}

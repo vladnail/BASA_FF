@@ -1,0 +1,1279 @@
+/* =========================================================
+   DEAD SPACE UI v5 — theme-aware (dark/light)
+   FIXES:
+   1) Свечение/стиль работают ОДИНАКОВО в reading + live preview + source.
+      (важно: одинаковые селекторы и для базы, и для типов)
+   2) Контур (border) всегда в цвете акцента: border-color = --ds-accent
+   3) Добавлены типы: лемма / пример / задача (со стикерами)
+   Визуально стиль оставлен тем же: градиент, scanlines, glow, иконки.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   0) Палитры
+   --------------------------------------------------------- */
+
+/* DARK */
+body.theme-dark{
+  --ds-bg: rgba(14, 16, 20, 0.72);
+  --ds-bg-2: rgb(10, 12, 16);
+  --ds-plate: rgba(0, 0, 0, 0.38);
+
+  --ds-text: rgba(235, 245, 255, 0.92);
+  --ds-text-dim: rgba(205, 220, 235, 0.72);
+
+  --ds-red:  rgba(195, 39, 39, 0.92);  /* важно */
+  --ds-green:  rgba(120, 220, 170, 0.92);  /* определение */
+  --ds-purple: rgba(160, 125, 235, 0.92);  /* теорема */
+  --ds-amber:  rgba(235, 175, 95, 0.92);  /* лемма/утв/след */
+  --ds-blue:   rgba(105, 185, 235, 0.92);  /* пример/задача */
+  --ds-gray:   rgba(215, 225, 235, 0.72);  /* замечание */
+  --ds-steel:  rgba(140, 185, 205, 0.90);  /* доказательство */
+
+  --ds-inset: rgba(255, 255, 255, 0.025);
+  --ds-shadow-dark: rgba(0, 0, 0, 0.40);
+  --ds-scan-1: rgba(255, 255, 255, 0.045);
+
+  --ds-code-bg: rgba(105, 185, 235, 0.09);
+  --ds-code-border: rgba(105, 185, 235, 0.17);
+  --ds-pre-bg: rgba(0, 0, 0, 0.40);
+  --ds-pre-border: rgba(105, 185, 235, 0.15);
+
+  --ds-formula: rgba(235, 245, 255, 0.94);
+}
+
+/* LIGHT */
+body.theme-light{
+  --ds-bg: rgba(244, 247, 251, 1.00);
+  --ds-bg-2: rgba(232, 239, 247, 1.00);
+  --ds-plate: rgba(0, 0, 0, 0.07);
+
+  --ds-text: rgba(0, 0, 0, 0.88);
+  --ds-text-dim: rgba(0, 0, 0, 0.70);
+
+  --ds-red:  rgba(195, 39, 39, 0.92);  
+  --ds-green:  rgba(0, 120, 80, 1.00);
+  --ds-purple: rgba(110, 70, 180, 1.00);
+  --ds-amber:  rgba(180, 110, 40, 1.00);
+  --ds-blue:   rgba(0, 105, 170, 1.00);
+  --ds-gray:   rgba(0, 0, 0, 0.75);
+  --ds-steel:  rgba(45, 105, 130, 1.00);    /* доказательство */
+
+  --ds-inset: rgba(255, 255, 255, 0.00);
+  --ds-shadow-dark: rgba(0, 0, 0, 0.22);
+  --ds-scan-1: rgba(0, 0, 0, 0.032);
+
+  --ds-code-bg: rgba(0, 105, 170, 0.08);
+  --ds-code-border: rgba(0, 105, 170, 0.20);
+  --ds-pre-bg: rgba(0, 0, 0, 0.045);
+  --ds-pre-border: rgba(0, 0, 0, 0.12);
+
+  --ds-formula: rgba(0, 0, 0, 0.90);
+}
+
+/* FALLBACK (если классы темы не подхватились) */
+:root{
+  --ds-bg: rgba(14, 16, 20, 0.86);
+  --ds-bg-2: rgba(10, 12, 16, 0.92);
+  --ds-plate: rgba(0, 0, 0, 0.38);
+
+  --ds-text: rgba(235, 245, 255, 0.92);
+  --ds-text-dim: rgba(205, 220, 235, 0.72);
+
+  --ds-green:  rgba(120, 220, 170, 0.92);
+  --ds-purple: rgba(160, 125, 235, 0.92);
+  --ds-amber:  rgba(235, 175, 95, 0.92);
+  --ds-blue:   rgba(105, 185, 235, 0.92);
+  --ds-gray:   rgba(215, 225, 235, 0.72);
+  --ds-steel:  rgba(140, 185, 205, 0.90);  /* доказательство */
+
+  --ds-inset: rgba(255, 255, 255, 0.025);
+  --ds-shadow-dark: rgba(0, 0, 0, 0.40);
+  --ds-scan-1: rgba(255, 255, 255, 0.045);
+
+  --ds-code-bg: rgba(105, 185, 235, 0.09);
+  --ds-code-border: rgba(105, 185, 235, 0.17);
+  --ds-pre-bg: rgba(0, 0, 0, 0.40);
+  --ds-pre-border: rgba(105, 185, 235, 0.15);
+
+  --ds-formula: rgba(235, 245, 255, 0.94);
+}
+
+/* ---------------------------------------------------------
+   1) Общие селекторы для ВСЕХ режимов
+   (важно: одинаковые префиксы для базы и для типов)
+   --------------------------------------------------------- */
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout{
+  position: relative;
+  overflow: hidden;
+
+  /* default, если тип не задан */
+  --ds-accent: var(--ds-purple);
+  --ds-glow: color-mix(in srgb, var(--ds-accent) 50%, transparent);
+
+  background: linear-gradient(180deg, var(--ds-bg), var(--ds-bg-2)) !important;
+
+  /* КЛЮЧ: рамка всегда в цвет акцента */
+  border: 2px solid var(--ds-accent) !important;
+
+  box-shadow:
+    0 0 0 0 var(--ds-inset) inset,
+    0 0 30px var(--ds-glow),
+    0 0 1px var(--ds-shadow-dark) !important;
+
+  border-radius: 10px !important;
+  padding: 0.85rem 1rem 1rem 1rem !important;
+  margin: 1.2em 0 !important;
+
+  color: var(--ds-text) !important;
+}
+
+/* убрать стандартные элементы */
+.callout-icon,
+.callout-fold{ display: none !important; }
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout-title{
+  margin: 0 0 0.65rem 0 !important;
+  padding: 0.25rem 0.25rem 0.45rem 0.25rem !important;
+
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+
+  font-weight: 850 !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: var(--ds-accent) !important;
+  border-bottom: 2px solid var(--ds-accent) !important;
+  position: relative;
+}
+
+/* Иконка как маска: цвет = акцент */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout-title::before{
+  content: "";
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background: var(--ds-accent);
+  filter: drop-shadow(0 0 10px var(--ds-glow));
+}
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout-content{
+  padding: 0 !important;
+  margin: 0 !important;
+
+  font-family: "Times New Roman", Times, "Liberation Serif", serif !important;
+  font-size: 14pt !important;
+  line-height: 1.7 !important;
+
+  color: var(--ds-text) !important;
+}
+
+/* Scanlines */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      var(--ds-scan-1) 0px,
+      var(--ds-scan-1) 1px,
+      rgba(0,0,0,0.0) 3px,
+      rgba(0,0,0,0.0) 7px
+    );
+  opacity: 0.20;
+  mix-blend-mode: overlay;
+}
+
+/* Левая полоска (оставляю выключенной как было) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  background: var(--ds-accent);
+  opacity: 0.0;
+  box-shadow: 0 0 16px var(--ds-glow);
+}
+
+/* Код/формулы */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout-content code{
+  background: var(--ds-code-bg) !important;
+  border: 1px solid var(--ds-code-border) !important;
+  border-radius: 6px;
+  padding: 0.05em 0.35em;
+  color: var(--ds-formula) !important;
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout-content pre{
+  background: var(--ds-pre-bg) !important;
+  border: 1px solid var(--ds-pre-border) !important;
+  border-radius: 8px;
+  padding: 0.8rem !important;
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout-content mjx-container{
+  font-family: inherit !important;
+  color: var(--ds-formula) !important;
+}
+
+/* ---------------------------------------------------------
+   2) ТИПЫ (HALF 1): определение / теорема / утверждение / следствие
+   Принцип: те же префиксы :where(...), чтобы работало везде.
+   --------------------------------------------------------- */
+
+/* Важно — красный (стикер НЕ меняю) */
+
+/* Определение — зелёный (стикер НЕ меняю) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"]{
+  --ds-accent: var(--ds-red);
+  --ds-glow: color-mix(in srgb, var(--ds-red) 35%, transparent);
+}
+:where(.markdown-preview-view,.markdown-reading-view,.markdown-source-view,.markdown-source-view.mod-cm6,.cm-editor,.markdown-embed)
+.callout[data-callout="важно"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 2h4v13h-4V2Zm0 16h4v4h-4v-4Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 2h4v13h-4V2Zm0 16h4v4h-4v-4Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* Определение — зелёный (стикер НЕ меняю) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="определение"]{
+  --ds-accent: var(--ds-green);
+  --ds-glow: color-mix(in srgb, var(--ds-green) 35%, transparent);
+}
+:where(.markdown-preview-view,.markdown-reading-view,.markdown-source-view,.markdown-source-view.mod-cm6,.cm-editor,.markdown-embed)
+.callout[data-callout="определение"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v19l-5-3-5 3V3Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v19l-5-3-5 3V3Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* Теорема — фиолетовый (стикер НЕ меняю) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="теорема"]{
+  --ds-accent: var(--ds-purple);
+  --ds-glow: color-mix(in srgb, var(--ds-purple) 35%, transparent);
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="теорема"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 3 6v2h18V6l-9-4Z' fill='black'/%3E%3Cpath d='M5 10h2v8H5v-8Zm6 0h2v8h-2v-8Zm6 0h2v8h-2v-8Z' fill='black'/%3E%3Cpath d='M3 20v2h18v-2H3Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2 3 6v2h18V6l-9-4Z' fill='black'/%3E%3Cpath d='M5 10h2v8H5v-8Zm6 0h2v8h-2v-8Zm6 0h2v8h-2v-8Z' fill='black'/%3E%3Cpath d='M3 20v2h18v-2H3Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* Утверждение — оранжевый (стикер НЕ меняю) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="утверждение"]{
+  --ds-accent: var(--ds-amber);
+  --ds-glow: color-mix(in srgb, var(--ds-amber) 35%, transparent);
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="утверждение"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.0 16.2 4.8 12 3.4 13.4 9.0 19 21 7 19.6 5.6 9.0 16.2Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.0 16.2 4.8 12 3.4 13.4 9.0 19 21 7 19.6 5.6 9.0 16.2Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* Следствие — оранжевый (стикер НЕ меняю) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="следствие"]{
+  --ds-accent: var(--ds-amber);
+  --ds-glow: color-mix(in srgb, var(--ds-amber) 35%, transparent);
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="следствие"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13 5 20 12 13 19v-4H4v-6h9V5Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13 5 20 12 13 19v-4H4v-6h9V5Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* ---------------------------------------------------------
+   3) ТИПЫ (HALF 2): доказательство / замечание / лемма / пример / задача
+   + light-theme tweak для доказательства (без “убийства” свечения)
+   --------------------------------------------------------- */
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="доказательство"]{
+  /* стальной акцент для доказательства */
+  --ds-accent: var(--ds-steel);
+  --ds-glow: color-mix(in srgb, var(--ds-steel) 30%, transparent);
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="доказательство"] .callout-title{
+  /* читаемость, но в цвет акцента */
+  color: var(--ds-accent) !important;
+  border-bottom-color: var(--ds-accent) !important;
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="доказательство"] > .callout-title::before{
+  /* новый значок для доказательства (перо/ручка) */
+  background: var(--ds-accent) !important;
+  filter: drop-shadow(0 0 10px var(--ds-glow));
+
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.71 3.29a1 1 0 0 0-1.42 0l-9.9 9.9-1.88 5.65a1 1 0 0 0 1.26 1.26l5.65-1.88 9.9-9.9a1 1 0 0 0 0-1.42l-3.61-3.61ZM13.62 17.06l-3.78 1.26 1.26-3.78 6.9-6.9 2.52 2.52-6.9 6.9Z' fill='black'/%3E%3Cpath d='M4 20h16v2H4z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.71 3.29a1 1 0 0 0-1.42 0l-9.9 9.9-1.88 5.65a1 1 0 0 0 1.26 1.26l5.65-1.88 9.9-9.9a1 1 0 0 0 0-1.42l-3.61-3.61ZM13.62 17.06l-3.78 1.26 1.26-3.78 6.9-6.9 2.52 2.52-6.9 6.9Z' fill='black'/%3E%3Cpath d='M4 20h16v2H4z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* LIGHT: доказательство — чуть контрастнее, но glow остаётся */
+body.theme-light :where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="доказательство"]{
+  --ds-glow: color-mix(in srgb, var(--ds-steel) 50%, transparent);
+}
+
+/* Замечание — нейтральное (стикер НЕ меняю) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="замечание"]{
+  --ds-accent: var(--ds-gray);
+  --ds-glow: color-mix(in srgb, var(--ds-gray) 18%, transparent);
+}
+/* оставляем твою иконку info как была */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="замечание"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* Лемма — оранжевый (НОВЫЙ тип + НОВАЯ иконка) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="лемма"]{
+  --ds-accent: var(--ds-amber);
+  --ds-glow: color-mix(in srgb, var(--ds-amber) 35%, transparent);
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="лемма"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l1.6 5.2 5.4-.2-4.3 3.2 1.7 5.1-4.4-3-4.4 3 1.7-5.1L5 7l5.4.2L12 2z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2l1.6 5.2 5.4-.2-4.3 3.2 1.7 5.1-4.4-3-4.4 3 1.7-5.1L5 7l5.4.2L12 2z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="лемма"] > .callout-title::before{
+  width: 22px !important;
+  height: 22px !important;
+}
+
+/* Пример — синий (НОВЫЙ тип + НОВАЯ иконка) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"]{
+  --ds-accent: var(--ds-blue);
+  --ds-glow: color-mix(in srgb, var(--ds-blue) 35%, transparent);
+}
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 21h6v-1H9v1Zm3-20a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.3A7 7 0 0 0 12 1Zm3 11.7-.8.6V16H9.8v-2.7l-.8-.6A5.5 5.5 0 1 1 15 12.7Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 21h6v-1H9v1Zm3-20a7 7 0 0 0-4 12.7V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3.3A7 7 0 0 0 12 1Zm3 11.7-.8.6V16H9.8v-2.7l-.8-.6A5.5 5.5 0 1 1 15 12.7Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+
+/* ---------------------------------------------------------
+   4) Совместимость: если у кого-то callout-типы написаны с заглавной
+   (необязательно, но помогает)
+   --------------------------------------------------------- */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Пример"]{ --ds-accent: var(--ds-blue); --ds-glow: color-mix(in srgb, var(--ds-blue) 35%, transparent); }
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Задача"]{ --ds-accent: var(--ds-blue); --ds-glow: color-mix(in srgb, var(--ds-blue) 38%, transparent); }
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Лемма"]{ --ds-accent: var(--ds-amber); --ds-glow: color-mix(in srgb, var(--ds-amber) 35%, transparent); }
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Лемма"] > .callout-title::before{
+  width: 22px !important;
+  height: 22px !important;
+}
+
+
+/* ===== Global MathJax color ===== */
+mjx-container{
+  color: var(--ds-formula) !important;
+}
+
+/* иногда MathJax внутри span */
+.math mjx-container{
+  color: var(--ds-formula) !important;
+}
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout{
+  --callout-content-background: transparent !important;
+  --callout-blend-mode: normal !important;
+}
+
+/* =========================================================
+   OVERRIDES: лемма / утверждение / следствие — “как на картинке”
+   (остальное НЕ трогаем)
+   Вставь В КОНЕЦ файла, чтобы перебило базовые правила.
+   ========================================================= */
+
+/* общий “theorem-box” стиль для трёх типов */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="лемма"],
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="утверждение"],
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="следствие"]{
+  /* “как на картинке”: спокойная карточка + левая цветная полоса */
+  background: color-mix(in srgb, var(--ds-bg) 70%, var(--ds-accent) 6%) !important;
+
+  /* убираем “акцентную рамку по периметру” из базы */
+  border: 1px solid color-mix(in srgb, var(--ds-accent) 28%, var(--ds-plate)) !important;
+  border-left: 5px solid var(--ds-accent) !important;
+
+  box-shadow:
+    0 0 0 0 var(--ds-inset) inset,
+    0 0 16px color-mix(in srgb, var(--ds-accent) 22%, transparent),
+    0 0 1px var(--ds-shadow-dark) !important;
+
+  border-radius: 6px !important;
+  padding: 0.85rem 1rem 1rem 1rem !important;
+}
+
+/* отключаем scanlines только для этих трёх (на картинке фон “чистый”) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="лемма"]::before,
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="утверждение"]::before,
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="следствие"]::before{
+  opacity: 0 !important;
+}
+
+/* заголовок: без подчёркивания, без капса — ближе к “Theorem 8.2 …” */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="лемма"] > .callout-title,
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="утверждение"] > .callout-title,
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="следствие"] > .callout-title{
+  border-bottom: none !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+
+  /* небольшое “выделение строки заголовка” как в теоремниках */
+  padding: 0.10rem 0.25rem 0.35rem 0.25rem !important;
+  margin: 0 0 0.1rem 0 !important;
+}
+
+/* иконку оставляем (как у тебя), но делаем чуть “академичнее” по масштабу */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="лемма"] > .callout-title::before,
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="утверждение"] > .callout-title::before,
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="следствие"] > .callout-title::before{
+  width: 16px !important;
+  height: 16px !important;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--ds-accent) 28%, transparent)) !important;
+}
+
+/* совместимость с Заглавными вариантами */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Лемма"],
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Утверждение"],
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Следствие"]{
+  background: color-mix(in srgb, var(--ds-bg) 70%, var(--ds-accent) 6%) !important;
+  border: 1px solid color-mix(in srgb, var(--ds-accent) 28%, var(--ds-plate)) !important;
+  border-left: 5px solid var(--ds-accent) !important;
+  border-radius: 6px !important;
+}
+/* =========================================================
+   "ЗАМЕЧАНИЕ" как вложенный callout (>[!замечание])
+   Цель: хорошо смотрится ВНУТРИ других блоков (определение/теорема/…)
+   Вставь В КОНЕЦ файла.
+   ========================================================= */
+
+/* 0) База: делаем вложенные callout компактнее (только если они ВНУТРИ callout) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout .callout{
+  margin: 0.75rem 0 0.25rem 0 !important;
+  padding: 0.70rem 0.85rem 0.85rem 0.85rem !important;
+  border-radius: 10px !important;
+  box-shadow:
+    0 0 0 0 var(--ds-inset) inset,
+    0 0 14px color-mix(in srgb, var(--ds-accent) 18%, transparent),
+    0 0 1px var(--ds-shadow-dark) !important;
+}
+
+/* 1) Замечание: именно вложенный стиль (только когда замечание стоит внутри другого callout) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout .callout[data-callout="замечание"]{
+  /* не спорим с акцентом родителя: используем нейтральный серый */
+  --ds-accent: var(--ds-gray);
+  --ds-glow: color-mix(in srgb, var(--ds-gray) 22%, transparent);
+
+  /* “врезка” внутри: мягкий фон + левая полоса */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ds-gray) 13%, var(--ds-bg) 87%),
+      color-mix(in srgb, var(--ds-gray) 7%,  var(--ds-bg-2) 93%)
+    ) !important;
+
+  /* вместо толстой рамки по периметру — аккуратная */
+  border: 1px solid color-mix(in srgb, var(--ds-gray) 30%, var(--ds-plate)) !important;
+  border-left: 5px solid color-mix(in srgb, var(--ds-gray) 80%, transparent) !important;
+
+  box-shadow:
+    0 0 0 0 var(--ds-inset) inset,
+    0 0 12px var(--ds-glow),
+    0 0 1px var(--ds-shadow-dark) !important;
+}
+
+/* выключаем scanlines у вложенного замечания (чтобы не шумело внутри блока) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout .callout[data-callout="замечание"]::before{
+  opacity: 0 !important;
+}
+
+/* 2) Заголовок замечания — компактный “ярлык”, без нижней линии */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout .callout[data-callout="замечание"] > .callout-title{
+  margin: 0 0 0.45rem 0 !important;
+  padding: 0.10rem 0.25rem 0.20rem 0.25rem !important;
+
+  border-bottom: none !important;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+
+  color: color-mix(in srgb, var(--ds-gray) 92%, var(--ds-text) 8%) !important;
+}
+
+/* 3) Иконка: “i” без круга (хорошо читается в маленьком вложенном блоке) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="замечание"] > .callout-title::before{
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z' fill='black'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* 4) Контент замечания — чуть меньше отступ и мягче текст */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout .callout[data-callout="замечание"] > .callout-content{
+  font-size: 0.98em !important;
+  color: color-mix(in srgb, var(--ds-text) 92%, var(--ds-gray) 8%) !important;
+}
+
+/* 5) Вложенное замечание внутри вложенного — ещё компактнее (на всякий) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout .callout .callout[data-callout="замечание"]{
+  margin-top: 0.55rem !important;
+}
+/* =========================================================
+   "ПРИМЕР" — отличительный стиль (гармонично, но заметно иначе)
+   Идея: вместо обычной рамки — “лабораторная карточка”:
+   пунктирная рамка + верхняя лента + лёгкая сетка (как миллиметровка).
+   Ничего кроме "пример" не затрагивает.
+   Вставь В КОНЕЦ файла.
+   ========================================================= */
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"]{
+  --ds-accent: var(--ds-blue);
+  --ds-glow: color-mix(in srgb, var(--ds-blue) 38%, transparent);
+
+  /* мягкая “карточка” с чуть большим количеством синего */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ds-bg) 72%, var(--ds-blue) 10%),
+      color-mix(in srgb, var(--ds-bg-2) 80%, var(--ds-blue) 6%)
+    ) !important;
+
+  /* отличительное: пунктирная рамка + тонкая */
+  border: px dashed color-mix(in srgb, var(--ds-blue) 62%, var(--ds-plate)) !important;
+
+  box-shadow:
+    0 0 0 0 var(--ds-inset) inset,
+    0 0 22px var(--ds-glow),
+    0 0 1px var(--ds-shadow-dark) !important;
+
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+/* декоративный слой: лента сверху + “миллиметровка” */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"]::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  /* 1) верхняя лента  2) сетка  3) лёгкая вуаль */
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ds-blue) 60%, transparent),
+      transparent 60%
+    ) top/100% 10px no-repeat,
+
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--ds-blue) 10%, transparent) 0px,
+      color-mix(in srgb, var(--ds-blue) 10%, transparent) 1px,
+      transparent 1px,
+      transparent 18px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ds-blue) 8%, transparent) 0px,
+      color-mix(in srgb, var(--ds-blue) 8%, transparent) 1px,
+      transparent 1px,
+      transparent 18px
+    ),
+    linear-gradient(
+      180deg,
+      transparent,
+      color-mix(in srgb, var(--ds-blue) 6%, transparent)
+    );
+
+  opacity: 0.45;
+  mix-blend-mode: normal;
+}
+
+/* убираем стандартные scanlines именно у примера (чтобы сетка не конфликтовала) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"]::after{
+  opacity: 0 !important;
+}
+
+/* заголовок: как “label” (чуть более технично) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"] > .callout-title{
+  border-bottom: none !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  padding: 0.22rem 0.35rem 0.35rem 0.35rem !important;
+  margin: 0 0 0.55rem 0 !important;
+
+  position: relative;
+}
+
+/* тонкая линия под заголовком, но пунктиром */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"] > .callout-title::after{
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  right: 0.25rem;
+  bottom: -0.15rem;
+  border-bottom: 2px dashed color-mix(in srgb, var(--ds-blue) 60%, transparent);
+  opacity: 0.9;
+}
+
+/* иконку оставляем твою, но делаем “чуть ярче” */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"] > .callout-title::before{
+  filter: drop-shadow(0 0 12px var(--ds-glow)) !important;
+}
+
+/* совместимость с "Пример" (с заглавной) */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Пример"]{
+  --ds-accent: var(--ds-blue);
+  --ds-glow: color-mix(in srgb, var(--ds-blue) 38%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--ds-bg) 72%, var(--ds-blue) 10%),
+      color-mix(in srgb, var(--ds-bg-2) 80%, var(--ds-blue) 6%)
+    ) !important;
+  border: 2px dashed color-mix(in srgb, var(--ds-blue) 62%, var(--ds-plate)) !important;
+  border-radius: 12px !important;
+}
+/* =========================================================
+   FIX: убрать верхнюю подсветку у "Пример"
+   (оставляем сетку, убираем тёмную вуаль сверху)
+   ========================================================= */
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="пример"]::before{
+  /* убираем верхний градиент, оставляем только сетку */
+  background:
+    /* СЕТКА */
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--ds-blue) 10%, transparent) 0px,
+      color-mix(in srgb, var(--ds-blue) 10%, transparent) 1px,
+      transparent 1px,
+      transparent 18px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ds-blue) 8%, transparent) 0px,
+      color-mix(in srgb, var(--ds-blue) 8%, transparent) 1px,
+      transparent 1px,
+      transparent 18px
+    ) !important;
+
+  opacity: 0.35;
+}
+/* =========================================================
+   ВАЖНО — отдельный стиль (фон + форма), читабельно, в твоём вайбе.
+   Делает “аварийную табличку”: тёмная подложка + красный шеврон
+   + мягкий диагональный хэтч, без анимации.
+   Вставь В КОНЕЦ файла.
+   ========================================================= */
+
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"]{
+  --ds-accent: var(--ds-red);
+  --ds-glow: color-mix(in srgb, var(--ds-red) 38%, transparent);
+
+  /* собственный фон (не как у остальных) */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, rgba(0,0,0,0.78) 85%, var(--ds-red) 15%),
+      color-mix(in srgb, rgba(0,0,0,0.86) 92%, var(--ds-red) 8%)
+    ) !important;
+
+  border: 2px solid color-mix(in srgb, var(--ds-red) 75%, rgba(0,0,0,0.25)) !important;
+  border-radius: 12px !important;
+
+  box-shadow:
+    0 0 0 0 var(--ds-inset) inset,
+    0 0 28px var(--ds-glow),
+    0 0 1px var(--ds-shadow-dark) !important;
+
+  overflow: hidden;
+}
+
+/* декоративный слой: диагональный “hazard hatch” + мягкое затухание */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"]::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--ds-red) 14%, transparent) 0px,
+      color-mix(in srgb, var(--ds-red) 14%, transparent) 8px,
+      transparent 8px,
+      transparent 18px
+    ),
+    radial-gradient(
+      120% 80% at 10% 0%,
+      color-mix(in srgb, var(--ds-red) 22%, transparent),
+      transparent 55%
+    );
+
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+
+/* убираем твои scanlines у "важно", чтобы не конфликтовало с hatch */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"]::after{
+  opacity: 0 !important;
+}
+
+/* заголовок: шевронная плашка слева + подчёркивание убираем */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"] > .callout-title{
+  border-bottom: none !important;
+  padding: 0.25rem 0.35rem 0.45rem 0.35rem !important;
+  margin: 0 0 0.65rem 0 !important;
+
+  position: relative;
+  z-index: 1;
+
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* красный “chevron” под заголовком */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"] > .callout-title::after{
+  content: "";
+  position: absolute;
+  left: -1rem;
+  top: -0.2rem;
+  height: 2.2rem;
+  width: clamp(160px, 45%, 320px);
+
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--ds-red) 85%, transparent),
+    color-mix(in srgb, var(--ds-red) 25%, transparent)
+  );
+
+  clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%, 6% 50%);
+  opacity: 0.70;
+
+  z-index: -1;
+  filter: drop-shadow(0 0 14px var(--ds-glow));
+}
+
+/* контент поверх декоративных слоёв */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"] > .callout-content{
+  position: relative;
+  z-index: 1;
+}
+
+/* LIGHT: чуть спокойнее hatch, чтобы не “съедать” текст */
+body.theme-light :where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="важно"]::before{
+  opacity: 0.38;
+}
+
+/* совместимость с "Важно" */
+:where(
+  .markdown-preview-view,
+  .markdown-reading-view,
+  .markdown-source-view,
+  .markdown-source-view.mod-cm6,
+  .cm-editor,
+  .markdown-embed
+) .callout[data-callout="Важно"]{
+  --ds-accent: var(--ds-red);
+  --ds-glow: color-mix(in srgb, var(--ds-red) 38%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, rgba(0,0,0,0.78) 85%, var(--ds-red) 15%),
+      color-mix(in srgb, rgba(0,0,0,0.86) 92%, var(--ds-red) 8%)
+    ) !important;
+  border: 2px solid color-mix(in srgb, var(--ds-red) 75%, rgba(0,0,0,0.25)) !important;
+  border-radius: 12px !important;
+}
+body.theme-dark img[alt*="inv"]{
+  filter: invert(1) hue-rotate(180deg);
+}

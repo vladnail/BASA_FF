@@ -1,0 +1,281 @@
+/* =========================================================
+   LaTeX tcolorbox-like callouts (from your preamble.tex)
+   Targets (RU): [!теорема], [!следствие], [!утверждение], [!пример],
+                 [!определение], [!открытый-пример], [!пример], [!решение], [!доказательство]
+   ========================================================= */
+
+:root{
+  --lx-radius: 10px;
+  --lx-pad-y: 10px;
+  --lx-pad-x: 14px;
+  --lx-title-gap: 8px;
+
+  --lx-theorem-bg: #F2F2F9;
+  --lx-theorem-ac: #00007B;
+
+  --lx-purple: rgb(197,92,212);
+  --lx-green: rgb(56,140,70);
+  --lx-blue:  rgb(45,111,177);
+
+  --lx-example-bg: #F2FBF8;
+  --lx-example-fr: #88D6D1;
+  --lx-example-ti: #2A7F7F;
+
+  /* Definition/Open in your file use red!5 / red!80!black */
+  --lx-red-bg: color-mix(in srgb, red 5%, white);
+  --lx-red-fr: color-mix(in srgb, red 80%, black);
+
+  /* General text */
+  --lx-title-font: 700 0.95em/1.2 var(--font-interface);
+  --lx-body-font:  400 1.0em/1.55 var(--font-text);
+}
+
+/* Make “light boxes” readable in dark theme too */
+.theme-dark{
+  --lx-theorem-bg: color-mix(in srgb, #F2F2F9 85%, black);
+  --lx-example-bg: color-mix(in srgb, #F2FBF8 80%, black);
+  --lx-red-bg: color-mix(in srgb, red 6%, black);
+}
+
+/* Base reset for our callouts */
+.callout[data-callout="теорема"],
+.callout[data-callout="следствие"],
+.callout[data-callout="утверждение"],
+.callout[data-callout="пример"],
+.callout[data-callout="определение"],
+.callout[data-callout="открытый-пример"],
+.callout[data-callout="пример"],
+.callout[data-callout="решение"],
+.callout[data-callout="доказательство"]{
+  border-radius: var(--lx-radius);
+  overflow: hidden;
+  padding: var(--lx-pad-y) var(--lx-pad-x);
+  box-shadow: none;
+  border: 0;
+}
+
+/* Title */
+.callout[data-callout="теорема"] > .callout-title,
+.callout[data-callout="следствие"] > .callout-title,
+.callout[data-callout="утверждение"] > .callout-title,
+.callout[data-callout="пример"] > .callout-title,
+.callout[data-callout="определение"] > .callout-title,
+.callout[data-callout="открытый-пример"] > .callout-title,
+.callout[data-callout="пример"] > .callout-title,
+.callout[data-callout="решение"] > .callout-title,
+.callout[data-callout="доказательство"] > .callout-title{
+  font: var(--lx-title-font);
+  font-size: 1.08em;   /* аккуратно больше базового */
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  padding: 0;
+  margin: 0 0 var(--lx-title-gap) 0;
+  background: transparent;
+}
+
+/* Remove default Obsidian icon */
+.callout[data-callout="теорема"] .callout-icon,
+.callout[data-callout="следствие"] .callout-icon,
+.callout[data-callout="утверждение"] .callout-icon,
+.callout[data-callout="пример"] .callout-icon,
+.callout[data-callout="определение"] .callout-icon,
+.callout[data-callout="открытый-пример"] .callout-icon,
+.callout[data-callout="пример"] .callout-icon,
+.callout[data-callout="решение"] .callout-icon,
+.callout[data-callout="доказательство"] .callout-icon{
+  display: none;
+}
+
+/* Content spacing */
+.callout[data-callout="теорема"] > .callout-content,
+.callout[data-callout="следствие"] > .callout-content,
+.callout[data-callout="утверждение"] > .callout-content,
+.callout[data-callout="пример"] > .callout-content,
+.callout[data-callout="определение"] > .callout-content,
+.callout[data-callout="открытый-пример"] > .callout-content,
+.callout[data-callout="пример"] > .callout-content,
+.callout[data-callout="решение"] > .callout-content,
+.callout[data-callout="доказательство"] > .callout-content{
+  font: var(--lx-body-font);
+  font-size: 1.06em;   /* аккуратно больше базового */
+  line-height: 1.6;
+  padding: 0;
+}
+
+/* =========================================================
+   1) ТЕОРЕМА (left stripe; frame hidden)
+   ========================================================= */
+.callout[data-callout="теорема"]{
+  background: var(--lx-theorem-bg);
+  position: relative;
+}
+.callout[data-callout="теорема"]::before{
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--lx-theorem-ac);
+}
+.callout[data-callout="теорема"] > .callout-title{
+  color: var(--lx-theorem-ac);
+}
+
+
+/* =========================================================
+   4) ПРИМЕР (framed box, teal)
+   ========================================================= */
+.callout[data-callout="пример"]{
+  background: var(--lx-example-bg);
+  border: 1px solid var(--lx-example-fr);
+}
+.callout[data-callout="пример"] > .callout-title{
+  color: var(--lx-example-ti);
+}
+
+/* =========================================================
+   5) ОПРЕДЕЛЕНИЕ (boxed title tag on top-left) — БЕЗ ХВОСТА
+   ========================================================= */
+.callout[data-callout="определение"]{
+  background: var(--lx-red-bg);
+  border: 2px solid var(--lx-red-fr);
+  position: relative;
+  padding-top: calc(var(--lx-pad-y) + 28px); /* room for label */
+}
+.callout[data-callout="определение"] > .callout-title{
+  position: absolute;
+  left: 14px;
+  top: -1px;
+  margin: 0;
+  padding: 7px 12px;
+  color: white;
+  background: var(--lx-red-fr);
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+/* убрано: ::after хвост */
+
+
+/* =========================================================
+   7) ПРИМЕР (tab title, blue)
+   ========================================================= */
+.callout[data-callout="пример"]{
+  background: white;
+  border: 2px solid color-mix(in srgb, var(--lx-blue) 80%, black);
+  position: relative;
+  padding-top: calc(var(--lx-pad-y) + 28px);
+}
+.theme-dark .callout[data-callout="пример"]{
+  background: color-mix(in srgb, white 6%, black);
+}
+.callout[data-callout="пример"] > .callout-title{
+  position: absolute;
+  left: 14px;
+  top: -1px;
+  margin: 0;
+  padding: 7px 12px;
+  color: white;
+  background: color-mix(in srgb, var(--lx-blue) 80%, black);
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+
+
+/* =========================================================
+   9) ДОКАЗАТЕЛЬСТВО (dashed)
+   ========================================================= */
+.callout[data-callout="доказательство"]{
+  background: transparent;
+  border: 1px dashed color-mix(in srgb, currentColor 25%, transparent);
+}
+.callout[data-callout="доказательство"] > .callout-title{
+  color: currentColor;
+}
+/* =========================================================
+   ДОКАЗАТЕЛЬСТВО: свернуть по умолчанию, раскрывать при наведении
+   Работает без JS: hover (и focus-within для клавиатуры)
+   ========================================================= */
+
+/* базовый вид блока доказательства */
+.callout[data-callout="доказательство"]{
+  position: relative;
+}
+
+/* заголовок + стрелка */
+.callout[data-callout="доказательство"] > .callout-title{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.callout[data-callout="доказательство"] > .callout-title::before{
+  content: "▶";
+  font-size: 0.95em;
+  opacity: 0.85;
+}
+
+/* СВЁРНУТО по умолчанию */
+.callout[data-callout="доказательство"] > .callout-content{
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.18s ease;
+}
+
+/* РАСКРЫТИЕ при наведении на весь блок */
+.callout[data-callout="доказательство"]:hover > .callout-title::before{
+  content: "▼";
+}
+
+.callout[data-callout="доказательство"]:hover > .callout-content{
+  max-height: 2000px; /* достаточно большой лимит */
+  opacity: 1;
+}
+
+/* чтобы работало и при табе/клике внутрь (формулы, ссылки) */
+.callout[data-callout="доказательство"]:focus-within > .callout-title::before{
+  content: "▼";
+}
+
+.callout[data-callout="доказательство"]:focus-within > .callout-content{
+  max-height: 2000px;
+  opacity: 1;
+}
+
+/* =========================================================
+   GLOBAL FONT: Times New Roman
+   ========================================================= */
+
+/* основной текст заметок */
+.markdown-preview-view,
+.markdown-reading-view,
+.markdown-source-view,
+.markdown-source-view.mod-cm6{
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+/* заголовки */
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3,
+.markdown-preview-view h4,
+.markdown-preview-view h5,
+.markdown-preview-view h6{
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+/* callout-блоки целиком */
+.callout,
+.callout *{
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+/* формулы в тексте (MathJax наследует шрифт окружения) */
+mjx-container{
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+/* код не трогаем */
+code, pre, kbd, samp{
+  font-family: var(--font-monospace) !important;
+}
