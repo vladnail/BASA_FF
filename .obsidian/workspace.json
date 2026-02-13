@@ -4,21 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "784656756b76a271",
+        "id": "f5eb9ba1c74612cf",
         "type": "tabs",
         "children": [
           {
-            "id": "3d61bba8423c04c2",
+            "id": "47fbf0bb8309ccac",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": "БАЗА/Практика/Математика/Векторные дифференциальные операторы.md",
-                "bFile": "БАЗА/Практика/Математика/Векторные дифференциальные операторы.md",
-                "aRef": ""
+                "file": "БАЗА/Практика/Математика/Векторные дифференциальные операторы.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
               },
-              "icon": "diff",
-              "title": "Diff: Векторные дифференциальные операторы  (Working Tree)"
+              "icon": "lucide-file",
+              "title": "Векторные дифференциальные операторы"
             }
           }
         ]
@@ -185,7 +186,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "3d61bba8423c04c2",
+  "active": "47fbf0bb8309ccac",
   "lastOpenFiles": [
     "БАЗА/Практика/Математика/Векторные дифференциальные операторы.md",
     "БАЗА/Практика/Физика/Системы координат.md",
