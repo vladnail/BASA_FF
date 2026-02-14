@@ -8,5 +8,6 @@
   "callout-integrator",
   "webpage-html-export",
   "inline-math",
-  "obsidian-git"
+  "obsidian-git",
+  "global-search-and-replace"
 ]

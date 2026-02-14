@@ -113,5 +113,14 @@
       ],
       "key": "S"
     }
+  ],
+  "global-search-and-replace:search-and-replace": [
+    {
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ],
+      "key": "F"
+    }
   ]
 }

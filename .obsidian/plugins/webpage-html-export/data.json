@@ -10,7 +10,7 @@
     "postProcess": true,
     "displayProgress": true,
     "inlineHTML": false,
-    "exportPath": "/Users/vladbelousov/Desktop",
+    "exportPath": "C:\\Users\\Влад\\Desktop",
     "filesToExport": [],
     "useFallbackRenderer": false,
     "addBodyClasses": true,
