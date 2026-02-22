@@ -7,7 +7,7 @@
   "math-in-callout",
   "callout-integrator",
   "webpage-html-export",
-  "inline-math",
   "obsidian-git",
-  "global-search-and-replace"
+  "global-search-and-replace",
+  "inline-math"
 ]
