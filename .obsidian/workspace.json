@@ -11,15 +11,14 @@
             "id": "16169fda884ec0ac",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "split-diff-view",
               "state": {
-                "file": "Кафедра/Ионный источник.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
+                "aFile": "Учеба/Разбор лекций ТДиСФ.md",
+                "bFile": "Учеба/Разбор лекций ТДиСФ.md",
+                "aRef": ""
               },
-              "icon": "lucide-file",
-              "title": "Ионный источник"
+              "icon": "diff",
+              "title": "Diff: Разбор лекций ТДиСФ  (Working Tree)"
             }
           }
         ]
@@ -45,7 +44,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "Файловый менеджер"
             }
           },
           {
@@ -171,26 +170,27 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false,
-      "pdf-plus:PDF++: Toggle auto-focus": false,
-      "pdf-plus:PDF++: Toggle auto-paste": false,
-      "callout-manager:Insert Callout": false,
-      "webpage-html-export:Export as HTML": false,
-      "obsidian-git:Open Git source control": false
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": true,
+      "templates:Вставить шаблон": true,
+      "command-palette:Открыть палитру команд": true,
+      "bases:Создать новую базу": true,
+      "pdf-plus:PDF++: Toggle auto-focus": true,
+      "pdf-plus:PDF++: Toggle auto-paste": true,
+      "callout-manager:Insert Callout": true,
+      "webpage-html-export:Export as HTML": true,
+      "obsidian-git:Open Git source control": true
     }
   },
   "active": "16169fda884ec0ac",
   "lastOpenFiles": [
-    "Учеба/Разбор лекций КМ 2.md",
+    "Учеба/Разбор лекций ТДиСФ.md",
     "Учеба/Разбор лекций ММФ 2.md",
-    "Кафедра/Литература/Оборудование ионной имплантации_сжатый.pdf",
+    "Учеба/Разбор лекций КМ 2.md",
     "Кафедра/Ионный источник.md",
+    "Кафедра/Литература/Оборудование ионной имплантации_сжатый.pdf",
     "Кафедра/Литература/Фриман и Бернас источники.pdf",
     "Кафедра/Литература/Лёб. Основные процессы электрических разрядов в газах.djvu",
     "Кафедра/Литература",
@@ -206,7 +206,6 @@
     "Pasted image 20260221113921.png",
     "Pasted image 20260221113853.png",
     "Pasted image 20260221113723.png",
-    "Учеба/Разбор лекций ТДиСФ.md",
     "Литература/КМ 2/Месы КМ 2.pdf",
     "Литература/ТДиСФ/Месы ТДиФС.pdf",
     "Литература/ММФ 2/Месы ММФ 2.pdf",
