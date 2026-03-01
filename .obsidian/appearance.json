@@ -2,7 +2,7 @@
   "accentColor": "",
   "translucency": true,
   "textFontFamily": "Times New Roman",
-  "baseFontSize": 16,
+  "baseFontSize": 19,
   "monospaceFontFamily": "",
   "enabledCssSnippets": [
     "проверка",
@@ -11,5 +11,5 @@
   "cssTheme": "",
   "baseFontSizeAction": true,
   "showRibbon": true,
-  "theme": "moonstone"
+  "theme": "system"
 }
