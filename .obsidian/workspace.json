@@ -11,15 +11,14 @@
             "id": "f41aaf93019858ef",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "split-diff-view",
               "state": {
-                "file": "Учеба/Атомный практикум/Лабораторная работа № 2.3.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
+                "aFile": ".obsidian/app.json",
+                "bFile": ".obsidian/app.json",
+                "aRef": ""
               },
-              "icon": "lucide-file",
-              "title": "Лабораторная работа № 2.3"
+              "icon": "diff",
+              "title": "Diff: app.json  (Working Tree)"
             }
           }
         ]
@@ -79,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "1dd83489013cc46d",
@@ -186,7 +184,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "284a253a10dc7856",
+  "active": "f41aaf93019858ef",
   "lastOpenFiles": [
     "Учеба/Атомный практикум/Лабораторная работа № 2.3.md",
     "T2_fit 5.png",
