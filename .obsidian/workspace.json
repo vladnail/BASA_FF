@@ -8,50 +8,21 @@
         "type": "tabs",
         "children": [
           {
-            "id": "f41aaf93019858ef",
-            "type": "leaf",
-            "state": {
-              "type": "split-diff-view",
-              "state": {
-                "aFile": ".obsidian/workspace.json",
-                "bFile": ".obsidian/workspace.json",
-                "aRef": ""
-              },
-              "icon": "diff",
-              "title": "Diff: workspace.json  (Working Tree)"
-            }
-          },
-          {
-            "id": "2f530af3b0651a08",
-            "type": "leaf",
-            "state": {
-              "type": "split-diff-view",
-              "state": {
-                "aFile": "Учеба/Атомный практикум/Лабораторная работа  № 1.4.md",
-                "bFile": "Учеба/Атомный практикум/Лабораторная работа  № 1.4.md",
-                "aRef": "HEAD",
-                "bRef": ""
-              },
-              "icon": "diff",
-              "title": "Diff: Лабораторная работа  № 1.4  (Index)"
-            }
-          },
-          {
             "id": "5edfcee52e152736",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": "conflict-files-obsidian-git.md",
-                "bFile": "conflict-files-obsidian-git.md",
-                "aRef": ""
+                "file": "Учеба/Атомный практикум/Лабораторная работа  № 1.3.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
               },
-              "icon": "diff",
-              "title": "Diff: conflict-files-obsidian-git  (Working Tree)"
+              "icon": "lucide-file",
+              "title": "Лабораторная работа  № 1.3"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -196,7 +167,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 472.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -214,13 +185,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "5edfcee52e152736",
+  "active": "284a253a10dc7856",
   "lastOpenFiles": [
-    "Кафедра/Ионный источник.md",
-    "Учеба/Атомный практикум/Лабораторная работа № 5.2.md",
-    "Учеба/Атомный практикум/Лабораторная работа № 2.3.md",
     "Учеба/Атомный практикум/Лабораторная работа № 1.1.md",
-    "Учеба/Атомный практикум/Лабораторная работа  № 1.4.md",
+    "Учеба/Атомный практикум/Лабораторная работа № 2.3.md",
+    "Учеба/Атомный практикум/Лабораторная работа № 5.2.md",
+    "Учеба/Атомный практикум/Лабораторная работа  № 1.3.md",
+    "Кафедра/Ионный источник.md",
     "Без названия.md",
     "conflict-files-obsidian-git.md",
     "Учеба/Литература/ТДиСФ/Месы ТДиФС.pdf",
