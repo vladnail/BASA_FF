@@ -4,22 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "291e14269c3f3147",
+        "id": "239807ee9669f05f",
         "type": "tabs",
         "children": [
           {
-            "id": "13552ad24b4a84ac",
+            "id": "ab790435b5146b9a",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Учеба/Атомный практикум/Лабораторная работа № 1.1.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Лабораторная работа № 1.1"
+              "title": "Новая вкладка"
             }
           }
         ]
@@ -79,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 315.5024719238281
+    "width": 290.5024719238281
   },
   "right": {
     "id": "1dd83489013cc46d",
@@ -185,10 +180,15 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "13552ad24b4a84ac",
+  "active": "1f43c2f2274b7310",
   "lastOpenFiles": [
-    "conflict-files-obsidian-git.md",
+    "Учеба/Атомный практикум/image/SVHS (260330-151047-328).bmp",
+    "Учеба/Атомный практикум/image/SVHS (260330-150603-218).bmp",
+    "Учеба/Атомный практикум/image/Pasted image 20260414092817.png",
+    "Учеба/Атомный практикум/image/CVBS (260330-150941-515).bmp",
+    "Учеба/Атомный практикум/Лабораторная работа №2.1.md",
     "Учеба/Атомный практикум/Лабораторная работа № 1.1.md",
+    "conflict-files-obsidian-git.md",
     "Кафедра/Параметры разрабатываемого источника.md",
     "Кафедра/Разработка численной модели.md",
     "Кафедра/Литература/Схема by Starastenko.pdf",
@@ -203,12 +203,8 @@
     "Кафедра/image/Pasted image 20260411233806.png",
     "Кафедра/image/Pasted image 20260411230922.png",
     "Кафедра/image/Pasted image 20260411230627.png",
-    "Кафедра/image/Pasted image 20260411230532.png",
     "Кафедра/Литература/Схема by Starastenko.pdf.crdownload",
     "Кафедра/Ионный источник.md",
-    "Учеба/Атомный практикум/image/Pasted image 20260406234224.png",
-    "Учеба/Атомный практикум/image/Pasted image 20260406234501.png",
-    "Учеба/Атомный практикум/image/Pasted image 20260406234247.png",
     "Учеба/Атомный практикум/Лабораторная работа  № 1.3.md",
     "Кафедра/image/57РИ.001.01.02.00.03 Диафрагма_изм.20.02.2026.pdf",
     "Учеба/Разбор лекций КМ 2.md",
