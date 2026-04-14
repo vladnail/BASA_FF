@@ -79,7 +79,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 353.5
   },
   "right": {
     "id": "1dd83489013cc46d",
@@ -185,7 +185,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "5b79cb0a41597e9f",
+  "active": "1f43c2f2274b7310",
   "lastOpenFiles": [
     "Кафедра/Параметры разрабатываемого источника.md",
     "Кафедра/Ионный источник.md",
