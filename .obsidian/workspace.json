@@ -22,8 +22,24 @@
               "icon": "lucide-file-text",
               "title": "Месы КМ 2"
             }
+          },
+          {
+            "id": "5fd99b8849ce7d3c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "conflict-files-obsidian-git"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -186,10 +202,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ac57507f572fa6c3",
+  "active": "5fd99b8849ce7d3c",
   "lastOpenFiles": [
-    "Кафедра/План написания курсовой работы.md",
     "Учеба/Литература/КМ 2/Месы КМ 2.pdf",
+    "conflict-files-obsidian-git.md",
+    "Кафедра/План написания курсовой работы.md",
     "Кафедра/Литература/Схема by Starastenko.pdf",
     "Кафедра/Литература/Оборудование ионной имплантации_сжатый.pdf",
     "Учеба/Литература/ТДиСФ/Месы ТДиФС.pdf",
@@ -208,7 +225,6 @@
     "Учеба/Атомный практикум/Лабораторная работа № 1.4.md",
     "Учеба/Атомный практикум/Лабораторная работа № 1.1 (сделал).md",
     "БАЗА/Практика/Физика/Системы единиц и фундаментальные соотношения.md",
-    "conflict-files-obsidian-git.md",
     "Учеба/Атомный практикум/image/SVHS (260330-151047-328).bmp",
     "Учеба/Атомный практикум/image/SVHS (260330-150603-218).bmp",
     "Учеба/Атомный практикум/image/Pasted image 20260414092817.png",
